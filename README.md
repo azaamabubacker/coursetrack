@@ -1,73 +1,44 @@
-# React + TypeScript + Vite
+# 🎓 CourseTrack
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, learning-oriented web app built with the latest React ecosystem tools.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tech Stack
 
-## React Compiler
+| Area | Technology | Description |
+|------|-------------|-------------|
+| **Frontend** | [React 19](https://react.dev/) | Core library for UI |
+| **Language** | [TypeScript](https://www.typescriptlang.org/) | Type-safe JavaScript |
+| **Build Tool** | [Vite](https://vitejs.dev/) | Lightning-fast development server |
+| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) | Utility-first CSS framework |
+| **Routing** | [React Router v7](https://reactrouter.com/) | Client-side routing |
+| **State Management** | [Zustand](https://github.com/pmndrs/zustand) | Simple and fast store |
+| **Data Fetching** | [@tanstack/react-query v5](https://tanstack.com/query) + [Axios](https://axios-http.com/) | Query caching + HTTP client |
+| **Form Handling** | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) | Form control and validation |
+| **UI Components** | [Radix UI](https://www.radix-ui.com/) + [Vaul](https://vaul.emilkowal.ski/) | Accessible dialogs, drawers, etc. |
+| **Icons** | [Lucide React](https://lucide.dev/) | Modern, lightweight icons |
+| **Notifications** | [Sonner](https://sonner.emilkowal.ski/) | Toast notifications |
+| **Utilities** | clsx, class-variance-authority | Class helpers and variants |
+| **Auth** | js-cookie (mock session) | Local cookie-based mock login |
+| **Integration** | crisp-sdk-web | Live chat widget |
+| **Testing** | [Vitest](https://vitest.dev/) + Testing Library | Unit & integration testing |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🧠 Features (Planned)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+✅ Multi-page routing (Home, Courses, Login)  
+✅ Responsive layout with Tailwind  
+✅ Reusable Button & Icon system  
+✅ Dark/Light theme toggle (coming next)  
+✅ Zustand state management  
+✅ React Query with API caching  
+✅ Form validation with RHF + Zod  
+✅ Course CRUD operations  
+✅ Crisp chat integration  
+✅ Basic testing setup
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📂 Project Structure
