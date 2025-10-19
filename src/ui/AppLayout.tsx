@@ -2,6 +2,7 @@ import { NavLink, Outlet } from 'react-router';
 import { LogIn } from 'lucide-react';
 import Button from '../components/ui/Button';
 import ThemeToggle from './ThemeToggle';
+import { Toaster } from 'sonner';
 
 const linkBase =
   'text-zinc-600 dark:text-zinc-300 hover:text-blue-600 hover:underline underline-offset-4 decoration-2 transition-colors';
@@ -38,6 +39,7 @@ export default function AppLayout() {
       <main className="max-w-5xl mx-auto p-6">
         <Outlet />
       </main>
+      <Toaster richColors position="top-right" />
     </div>
   );
 }

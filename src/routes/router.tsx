@@ -3,6 +3,7 @@ import AppLayout from '../ui/AppLayout';
 import HomePage from '../feature/home/HomePage';
 import CoursesPage from '../feature/courses/CoursesPage';
 import LoginPage from '../feature/auth/LoginPage';
+import CourseDetailPage from '../feature/courses/CourseDetailsPage';
 
 export const router = createBrowserRouter([
   {
@@ -11,6 +12,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'courses', element: <CoursesPage /> },
+      { path: 'courses/:id', element: <CourseDetailPage /> },
       { path: 'login', element: <LoginPage /> },
     ],
   },
