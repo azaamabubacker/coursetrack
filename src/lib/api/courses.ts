@@ -10,7 +10,17 @@ export async function fetchCourses(params?: { page?: number; limit?: number; q?:
   return r.data;
 }
 
-export async function fetchCourse(id: number) {
+export async function fetchCourse(id: number | string) {
   const r = await api.get<Course>(`/courses/${id}`, { cache: { ttl: 60_000 } });
+  return r.data;
+}
+
+export async function createCourse(payload: Omit<Course, 'id'>) {
+  const r = await api.post<Course>('/courses', payload);
+  return r.data;
+}
+
+export async function updateCourse(id: number, payload: Partial<Omit<Course, 'id'>>) {
+  const r = await api.patch<Course>(`/courses/${id}`, payload);
   return r.data;
 }
