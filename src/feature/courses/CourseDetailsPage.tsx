@@ -4,6 +4,7 @@ import { fetchCourse } from '../../lib/api/courses';
 import { fetchLessonsByCourse } from '../../lib/api/lessons';
 import { checkEnrollment, enrollInCourse } from '../../lib/api/enrollments';
 import Button from '../../components/ui/Button';
+import { toast } from 'sonner';
 
 export default function CourseDetailPage() {
   const { id } = useParams();
@@ -47,6 +48,10 @@ export default function CourseDetailPage() {
     onError: (_err, _vars, ctx) => {
       // rollback to previous if error
       if (ctx?.prev !== undefined) qc.setQueryData(['enrolled', courseId], ctx.prev);
+      toast.error('Failed to enroll, try again.');
+    },
+    onSuccess: () => {
+      toast.success('Enrolled successfully! 🎉');
     },
     onSettled: () => {
       // ensure server truth in cache

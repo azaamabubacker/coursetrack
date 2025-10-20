@@ -51,6 +51,21 @@
       "id": "3dc5",
       "courseId": 1,
       "userId": 1
+    },
+    {
+      "id": "8326",
+      "courseId": 3,
+      "userId": 1
+    },
+    {
+      "id": "fc66",
+      "courseId": 3,
+      "userId": 1
+    },
+    {
+      "id": "b955",
+      "courseId": 3,
+      "userId": 1
     }
   ]
 }
