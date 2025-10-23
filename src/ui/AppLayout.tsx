@@ -2,6 +2,7 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router';
 import { Toaster } from 'sonner';
 import { useAuth } from '../store/auth';
 import { toast } from 'sonner';
+import TopProgress from '../components/ui/TopProgress';
 
 export default function AppLayout() {
   const user = useAuth((s) => s.user);
@@ -20,6 +21,7 @@ export default function AppLayout() {
 
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
+      <TopProgress />
       <header className="border-b border-zinc-200 dark:border-zinc-800">
         <nav className="flex w-full items-center justify-between max-w-5xl mx-auto p-4">
           <div className="flex items-center gap-6">
