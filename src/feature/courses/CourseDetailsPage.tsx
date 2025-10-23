@@ -5,20 +5,21 @@ import { fetchLessonsByCourse } from '../../lib/api/lessons';
 import { checkEnrollment, enrollInCourse } from '../../lib/api/enrollments';
 import Button from '../../components/ui/Button';
 import { toast } from 'sonner';
+import * as Tabs from '@radix-ui/react-tabs';
+import * as Accordion from '@radix-ui/react-accordion';
 
 export default function CourseDetailPage() {
-  const { id } = useParams(); // id can be "376f" (string)
+  const { id } = useParams();
   const qc = useQueryClient();
 
-  // 1) Fetch this course (accepts string/number ids)
+  // --- queries (unchanged) ---
   const courseQ = useQuery({
     queryKey: ['course', id],
-    queryFn: () => fetchCourse(id!), // id is defined because enabled uses Boolean(id)
+    queryFn: () => fetchCourse(id!),
     enabled: Boolean(id),
     retry: false,
   });
 
-  // 2) Numeric-only resources (demo data for lessons/enrollments still keyed by number)
   const numericId = Number(id);
   const hasNumericId = Number.isFinite(numericId);
 
@@ -34,7 +35,6 @@ export default function CourseDetailPage() {
     enabled: hasNumericId,
   });
 
-  // 3) Enroll mutation (optimistic + toasts)
   const enrollMut = useMutation({
     mutationFn: () => {
       if (!hasNumericId) {
@@ -59,7 +59,6 @@ export default function CourseDetailPage() {
     },
   });
 
-  // 4) Loading / error states
   if (courseQ.isLoading) return <p>Loading course…</p>;
   if (courseQ.isError || !courseQ.data) return <p className="text-red-600">Course not found.</p>;
 
@@ -69,22 +68,20 @@ export default function CourseDetailPage() {
 
   return (
     <section className="space-y-6">
+      {/* Header */}
       <header className="flex items-center justify-between">
         <div className="flex items-start gap-4">
-          {/* ✅ Thumbnail */}
           {course.thumbnail ? (
             <img
-              src={course.thumbnail} // works with data: URLs or http(s)
+              src={course.thumbnail}
               alt={course.title || 'Course thumbnail'}
               className="h-20 w-20 rounded-md object-cover border border-zinc-200 dark:border-zinc-700"
             />
           ) : (
-            // optional placeholder box
             <div className="h-20 w-20 rounded-md border border-dashed border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-xs text-zinc-500">
               No image
             </div>
           )}
-
           <div>
             <h1 className="text-3xl font-bold">{course.title?.trim() || 'Untitled course'}</h1>
             <p className="text-zinc-600 dark:text-zinc-300">{course.description?.trim() || 'No description yet.'}</p>
@@ -94,7 +91,6 @@ export default function CourseDetailPage() {
           </div>
         </div>
 
-        {/* Enroll button stays the same */}
         <Button
           variant={enrolled ? 'ghost' : 'primary'}
           onClick={() => enrollMut.mutate()}
@@ -105,31 +101,74 @@ export default function CourseDetailPage() {
         </Button>
       </header>
 
-      <section>
-        <h2 className="text-xl font-semibold mb-2">Lessons</h2>
+      {/* Tabs */}
+      <Tabs.Root defaultValue="overview" className="block">
+        <Tabs.List className="flex gap-2 border-b border-zinc-200 dark:border-zinc-800 mb-4">
+          {['overview', 'lessons', 'about'].map((tab) => (
+            <Tabs.Trigger
+              key={tab}
+              value={tab}
+              className="px-3 py-2 text-sm rounded-t-md data-[state=active]:bg-zinc-100 dark:data-[state=active]:bg-zinc-800
+                         data-[state=active]:text-zinc-900 dark:data-[state=active]:text-zinc-100
+                         text-zinc-600 dark:text-zinc-300"
+            >
+              {tab === 'overview' ? 'Overview' : tab === 'lessons' ? 'Lessons' : 'About'}
+            </Tabs.Trigger>
+          ))}
+        </Tabs.List>
 
-        {hasNumericId ? (
-          <>
-            {lessonsQ.isLoading && <p>Loading lessons…</p>}
-            {lessonsQ.isError && <p className="text-red-600">Failed to load lessons.</p>}
+        <Tabs.Content value="overview" className="space-y-3">
+          <p className="text-zinc-700 dark:text-zinc-300">{course.description?.trim() || 'No description yet.'}</p>
+          <Accordion.Root type="single" collapsible className="rounded-md">
+            <Accordion.Item value="faq-1" className="border-b border-zinc-200 dark:border-zinc-800">
+              <Accordion.Header>
+                <Accordion.Trigger className="w-full text-left px-3 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800">
+                  What will I learn?
+                </Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content className="px-3 pb-3 text-sm text-zinc-600 dark:text-zinc-300">
+                We’ll cover the fundamentals and build a small project.
+              </Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item value="faq-2" className="border-b border-zinc-200 dark:border-zinc-800">
+              <Accordion.Header>
+                <Accordion.Trigger className="w-full text-left px-3 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800">
+                  Do I need prior experience?
+                </Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content className="px-3 pb-3 text-sm text-zinc-600 dark:text-zinc-300">
+                Basic JavaScript knowledge helps, but we explain everything clearly.
+              </Accordion.Content>
+            </Accordion.Item>
+          </Accordion.Root>
+        </Tabs.Content>
 
-            <ul className="grid gap-2">
-              {lessons.map((l) => (
-                <li
-                  key={l.id}
-                  className="rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-3"
-                >
-                  {l.title}
-                </li>
-              ))}
-            </ul>
+        <Tabs.Content value="lessons" className="space-y-2">
+          {hasNumericId ? (
+            <>
+              {lessonsQ.isLoading && <p>Loading lessons…</p>}
+              {lessonsQ.isError && <p className="text-red-600">Failed to load lessons.</p>}
+              <ul className="grid gap-2">
+                {lessons.map((l) => (
+                  <li
+                    key={l.id}
+                    className="rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-3"
+                  >
+                    {l.title}
+                  </li>
+                ))}
+              </ul>
+              {lessons.length === 0 && !lessonsQ.isLoading && <p className="text-zinc-500">No lessons yet.</p>}
+            </>
+          ) : (
+            <p className="text-zinc-500">Lessons are unavailable for string IDs in this demo.</p>
+          )}
+        </Tabs.Content>
 
-            {lessons.length === 0 && !lessonsQ.isLoading && <p className="text-zinc-500">No lessons yet.</p>}
-          </>
-        ) : (
-          <p className="text-zinc-500">Lessons are unavailable for string IDs in this demo.</p>
-        )}
-      </section>
+        <Tabs.Content value="about" className="space-y-2">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">Contact: {course.contactPhone || '—'}</p>
+        </Tabs.Content>
+      </Tabs.Root>
     </section>
   );
 }
